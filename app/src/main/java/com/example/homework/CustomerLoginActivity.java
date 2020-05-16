@@ -39,7 +39,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(CustomerLoginActivity.this, MapActivity.class);
+                    Intent intent = new Intent(CustomerLoginActivity.this, CustomerMapActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -59,6 +59,10 @@ public class CustomerLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = cEmail.getText().toString();
                 final String password = cPassword.getText().toString();
+//                if (email.equals("") || password.equals("")) {
+//                    Toast.makeText(CustomerLoginActivity.this, "Email or password cannot be null.", Toast.LENGTH_SHORT).show();
+//                }
+
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -79,11 +83,14 @@ public class CustomerLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = cEmail.getText().toString();
                 final String password = cPassword.getText().toString();
+//                if (email.equals("") || password.equals("")) {
+//                    Toast.makeText(CustomerLoginActivity.this, "Email or password cannot be null.", Toast.LENGTH_SHORT).show();
+//                }
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(CustomerLoginActivity.this, "Sign up error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerLoginActivity.this, "User name/Password is not correct", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

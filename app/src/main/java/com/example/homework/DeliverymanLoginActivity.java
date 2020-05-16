@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,6 +60,11 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = dmEmail.getText().toString();
                 final String password = dmPassword.getText().toString();
+
+//                if (email.equals("") || password.equals("")) {
+//                    Toast.makeText(DeliverymanLoginActivity.this, "Email or password cannot be null.", Toast.LENGTH_SHORT).show();
+//                }
+
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(DeliverymanLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -66,7 +72,7 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
                             Toast.makeText(DeliverymanLoginActivity.this, "Sign up error", Toast.LENGTH_SHORT).show();
                         } else {
                             String user_id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Deliveryman").child(user_id);
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("deliveryman").child(user_id);
                             current_user_db.setValue(true);
                         }
                     }
@@ -79,11 +85,15 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = dmEmail.getText().toString();
                 final String password = dmPassword.getText().toString();
+
+//                if (email.equals("") || password.equals("")) {
+//                    Toast.makeText(DeliverymanLoginActivity.this, "Email or password cannot be null.", Toast.LENGTH_SHORT).show();
+//                }
                 mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(DeliverymanLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(DeliverymanLoginActivity.this, "Sign up error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DeliverymanLoginActivity.this, "User name/Password is not correct", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
