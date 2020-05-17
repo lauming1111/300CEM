@@ -7,12 +7,12 @@
     tools:context=".DeliverymanLoginActivity">
 
     <Button
-        android:id="@+id/cRegister"
+        android:id="@+id/dmRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Register"
-        app:layout_constraintBottom_toTopOf="@+id/cLogin"
+        app:layout_constraintBottom_toTopOf="@+id/dmLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/cLogin"
+        android:id="@+id/dmLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/cPassword"
+        android:id="@+id/dmPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -51,15 +51,15 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/cRegister"
+        app:layout_constraintBottom_toTopOf="@+id/dmRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cEmail"
+        app:layout_constraintTop_toBottomOf="@+id/dmEmail"
         app:layout_constraintVertical_bias="0.276" />
 
     <EditText
-        android:id="@+id/cEmail"
+        android:id="@+id/dmEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

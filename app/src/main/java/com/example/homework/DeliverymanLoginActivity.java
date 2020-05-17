@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class DeliverymanLoginActivity extends AppCompatActivity {
     private EditText dmEmail;
     private EditText dmPassword;
+    private EditText dmModel;
     private Button dmRegister;
     private Button dmLogin;
 
@@ -29,7 +29,6 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deliveryman_login);
@@ -48,18 +47,19 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
             }
         };
 
-        dmEmail = (EditText) findViewById(R.id.cEmail);
-        dmPassword = (EditText) findViewById(R.id.cPassword);
+        dmEmail = (EditText) findViewById(R.id.dmEmail);
+        dmPassword = (EditText) findViewById(R.id.dmPassword);
+        dmModel= (EditText) findViewById(R.id.dmModel);
 
-        dmRegister = (Button) findViewById(R.id.cRegister);
-        dmLogin = (Button) findViewById(R.id.cLogin);
-
+        dmRegister = (Button) findViewById(R.id.dmRegister);
+        dmLogin = (Button) findViewById(R.id.dmLogin);
 
         dmRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String email = dmEmail.getText().toString();
                 final String password = dmPassword.getText().toString();
+                final String model = dmModel.getText().toString();
 
 //                if (email.equals("") || password.equals("")) {
 //                    Toast.makeText(DeliverymanLoginActivity.this, "Email or password cannot be null.", Toast.LENGTH_SHORT).show();
