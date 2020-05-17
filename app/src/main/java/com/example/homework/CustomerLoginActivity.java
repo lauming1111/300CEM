@@ -107,6 +107,6 @@ public class CustomerLoginActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.addAuthStateListener(firebaseAuthListener);
+        mAuth.removeAuthStateListener(firebaseAuthListener);
     }
 }
