@@ -64,7 +64,7 @@ public class DeliveryMapActivity extends FragmentActivity implements
     public Double lon;
     public Double lai;
     private FirebaseAuth mAuth;
-    private DatabaseReference dbref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,35 +84,36 @@ public class DeliveryMapActivity extends FragmentActivity implements
         mSetting = (Button) findViewById(R.id.settings);
         mInfo = (Button) findViewById(R.id.info);
 
+        mAuth = FirebaseAuth.getInstance();
+        final DatabaseReference dbref = FirebaseDatabase.getInstance().getReference().child("deliverymanAvailable").child(mAuth.getCurrentUser().getUid());
+        dbref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    lai = (Double) dataSnapshot.child("l").child("0").getValue();
+                    lon = (Double) dataSnapshot.child("l").child("1").getValue();
+                    dbref.removeEventListener(this);
+                    mInfo.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         mInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mAuth = FirebaseAuth.getInstance();
-                dbref = FirebaseDatabase.getInstance().getReference().child("deliverymanAvailable").child(mAuth.getCurrentUser().getUid());
-
-                dbref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        DecimalFormat value = new DecimalFormat("#.##");
-                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            lai = (Double) dataSnapshot.child("l").child("0").getValue();
-                            lon = (Double) dataSnapshot.child("l").child("1").getValue();
-
-                            Intent intent = new Intent(DeliveryMapActivity.this, infoActivity.class);
-                            intent.putExtra(EXTRA_TEXT, activityName);
-                            intent.putExtra(EXTRA_TEXT1, String.valueOf(value.format(lai)));
-                            intent.putExtra(EXTRA_TEXT2, String.valueOf(value.format(lon)));
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                DecimalFormat value = new DecimalFormat("#.##");
+                Intent intent = new Intent(DeliveryMapActivity.this, infoActivity.class);
+                intent.putExtra(EXTRA_TEXT, activityName);
+                intent.putExtra(EXTRA_TEXT1, String.valueOf(value.format(lai)));
+                intent.putExtra(EXTRA_TEXT2, String.valueOf(value.format(lon)));
+                startActivity(intent);
 
                 finish();
                 return;
