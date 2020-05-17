@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -36,6 +38,7 @@ import java.util.Calendar;
 public class infoActivity extends AppCompatActivity {
     private TextView mDate;
     private TextView mStatus;
+    private TextView mScroll;
     private Button mBack;
     private String mLong;
     private String mLat;
@@ -65,6 +68,7 @@ public class infoActivity extends AppCompatActivity {
 //        mDate.setText(tmp + mLat + mLong + "");
 
         find_weather(mLat, mLong);
+        findNews();
 
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,27 +94,7 @@ public class infoActivity extends AppCompatActivity {
 
         final String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + mLat +
                 "&lon=" + mLong + "&appid=848784a9122d7f302f233d1d6be11c7c&units=metric";
-        Log.d("url1", url);
 
-
-//        OkHttpClient client = new OkHttpClient();
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//        client.newCall(request).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.isSuccessful()) {
-//                    String myResp = response.body().string();
-//                    Log.d("TAG", myResp);
-//                }
-//            }
-//        });
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             String tmp;
@@ -154,11 +138,55 @@ public class infoActivity extends AppCompatActivity {
         }
         );
 
-        Log.d("url2", url);
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(jor);
     }
 
+
+    public void findNews() {
+        final String newsUrl = "https://newsapi.org/v2/top-headlines?country=hk&category=health&apiKey=c2968f4da33f4c2987acf9909f6f8258";
+        mScroll = (TextView) findViewById(R.id.iScroll);
+
+
+        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, newsUrl, null, new Response.Listener<JSONObject>() {
+            String tmp = "";
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray array = response.getJSONArray("articles");
+
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject object = array.getJSONObject(i);
+                        String description = object.getString("description");
+                        Log.d("description", description);
+                        if (!description.equals("null")) {
+                            String title = object.getString("title");
+                            String author = object.getString("author");
+                            tmp = tmp +
+                                    "Title: " + title + "\n" +
+                                    "Description: " + description + "\n" +
+                                    "Author: " + author + "\n"
+                                    + "----------------------" + "\n";
+                        }
+                    }
+                    mScroll.setText(tmp);
+                } catch (JSONException e) {
+                    Log.d("TAG", String.valueOf(response));
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }
+        );
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(jor);
+
+    }
 
     public void handleStatus(double temp) {
         mStatus = (TextView) findViewById(R.id.iStatus);
