@@ -47,11 +47,11 @@ public class CustomerLoginActivity extends AppCompatActivity {
             }
         };
 
-        cEmail = (EditText) findViewById(R.id.cEmail);
-        cPassword = (EditText) findViewById(R.id.cPassword);
+        cEmail = (EditText) findViewById(R.id.dmEmail);
+        cPassword = (EditText) findViewById(R.id.dmPassword);
 
-        cRegister = (Button) findViewById(R.id.cRegister);
-        cLogin = (Button) findViewById(R.id.cLogin);
+        cRegister = (Button) findViewById(R.id.dmRegister);
+        cLogin = (Button) findViewById(R.id.dmLogin);
 
 
         cRegister.setOnClickListener(new View.OnClickListener() {

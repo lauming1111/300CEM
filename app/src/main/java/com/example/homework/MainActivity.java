@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mDM;
     private Button mClient;
-    private TextView mDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDM = (Button) findViewById(R.id.mainDM);
-        mClient = (Button) findViewById(R.id.mainUser);
-
-
-        find_weather();
-
-
-        mDM.setOnClickListener(new View.OnClickListener() {
+        mClient = (Button) findViewById(R.id.mainUser);      mDM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DeliverymanLoginActivity.class);
@@ -65,40 +58,5 @@ public class MainActivity extends AppCompatActivity {
         Uri appLinkData = appLinkIntent.getData();
     }
 
-    public void find_weather() {
-        mDate = (TextView) findViewById(R.id.hDate);
-        String url = "https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=848784a9122d7f302f233d1d6be11c7c";
 
-        JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject main_object = response.getJSONObject("main");
-                    JSONArray array = response.getJSONArray("weather");
-                    JSONObject object = array.getJSONObject(0);
-
-                    String temp = String.valueOf(main_object.getDouble("temp"));
-                    String city = response.getString("city");
-                    String description = object.getString("description");
-
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat time = new SimpleDateFormat("EEEE=MM-dd");
-                    String formatted_date = time.format(calendar.getTime());
-
-
-                    mDate.setText("yo");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }
-        );
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(jor);
-    }
 }
