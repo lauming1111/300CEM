@@ -49,7 +49,7 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
 
         dmEmail = (EditText) findViewById(R.id.dmEmail);
         dmPassword = (EditText) findViewById(R.id.dmPassword);
-        dmModel= (EditText) findViewById(R.id.dmModel);
+//        dmModel= (EditText) findViewById(R.id.dmModel);
 
         dmRegister = (Button) findViewById(R.id.dmRegister);
         dmLogin = (Button) findViewById(R.id.dmLogin);
@@ -59,7 +59,7 @@ public class DeliverymanLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String email = dmEmail.getText().toString();
                 final String password = dmPassword.getText().toString();
-                final String model = dmModel.getText().toString();
+//                final String model = dmModel.getText().toString();
 
 //                if (email.equals("") || password.equals("")) {
 //                    Toast.makeText(DeliverymanLoginActivity.this, "Email or password cannot be null.", Toast.LENGTH_SHORT).show();
