@@ -9,7 +9,8 @@
     <string name="registerBtn">Register</string>
     <string name="loginBtn">Login</string>
     <string name="bBtn">Back</string>
-    <string name="cfBtn">Comfirm</string>
+    <string name="cfBtn">Confirm</string>
+    <string name="cBtn">Open Camera</string>
 
     <string name="cusTxt">Customer</string>
     <string name="dmTxt">Delivery man</string>
