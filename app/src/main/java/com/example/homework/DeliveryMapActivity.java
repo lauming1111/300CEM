@@ -12,7 +12,6 @@ import android.icu.text.DecimalFormat;
 import android.location.Location;
 //import android.location.LocationListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -36,8 +35,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -50,6 +47,7 @@ public class DeliveryMapActivity extends FragmentActivity implements
     private Button mLogout;
     private Button mSetting;
     private Button mInfo;
+    private Boolean isLogout = false;
 
     private GoogleMap mMap;
     GoogleApiClient mGoogleApiClient;
@@ -123,7 +121,8 @@ public class DeliveryMapActivity extends FragmentActivity implements
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DeliveryMapActivity.this, customerSettingActivity.class);
+                Intent intent = new Intent(DeliveryMapActivity.this, settingActivity.class);
+                intent.putExtra(EXTRA_TEXT, activityName);
                 startActivity(intent);
                 finish();
                 return;
@@ -133,6 +132,7 @@ public class DeliveryMapActivity extends FragmentActivity implements
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isLogout = true;
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(DeliveryMapActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -177,7 +177,7 @@ public class DeliveryMapActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        if (getApplicationContext() != null) {
+        if (!isLogout && getApplicationContext() != null) {
             mLastLocation = location;
 
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());

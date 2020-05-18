@@ -3,40 +3,24 @@ package com.example.homework;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.DecimalFormat;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.LocationCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,12 +36,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Map;
 import java.util.Objects;
 
@@ -73,6 +51,7 @@ public class CustomerMapActivity extends FragmentActivity implements
     private String activityName = "client";
     public Double lon;
     public Double lai;
+    public boolean isLogout = false;
     private Button mLogout;
     private Button mOrder;
     private Button mSetting;
@@ -122,7 +101,8 @@ public class CustomerMapActivity extends FragmentActivity implements
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomerMapActivity.this, customerSettingActivity.class);
+                Intent intent = new Intent(CustomerMapActivity.this, settingActivity.class);
+                intent.putExtra(EXTRA_TEXT, activityName);
                 startActivity(intent);
                 finish();
                 return;
@@ -133,6 +113,7 @@ public class CustomerMapActivity extends FragmentActivity implements
         mLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isLogout = true;
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(CustomerMapActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -230,7 +211,7 @@ public class CustomerMapActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        if (getApplicationContext() != null) {
+        if (!isLogout && getApplicationContext() != null) {
             mLastLocation = location;
 
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());

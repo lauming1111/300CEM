@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,13 +31,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class customerSettingActivity extends AppCompatActivity {
+public class settingActivity extends AppCompatActivity {
     private Button submit;
     private Button back;
     private EditText name;
@@ -56,7 +54,7 @@ public class customerSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_setting);
+        setContentView(R.layout.activity_setting);
         mAuth = FirebaseAuth.getInstance();
 
         name = (EditText) findViewById(R.id.sName);
@@ -89,7 +87,7 @@ public class customerSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveUserInfo();
-                Intent intent = new Intent(customerSettingActivity.this, CustomerMapActivity.class);
+                Intent intent = new Intent(settingActivity.this, CustomerMapActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -98,10 +96,25 @@ public class customerSettingActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(customerSettingActivity.this, CustomerMapActivity.class);
-//                intent.putExtra(EXTRA_TEXT, activityName);
-                startActivity(intent);
-                finish();
+                Intent intent = getIntent();
+                final String tmp;
+                if (intent.getStringExtra(DeliveryMapActivity.EXTRA_TEXT) != null) {
+                    tmp = intent.getStringExtra(DeliveryMapActivity.EXTRA_TEXT);
+                } else {
+                    tmp = intent.getStringExtra(CustomerMapActivity.EXTRA_TEXT);
+                }
+
+                if (tmp != null && tmp.equals("dm")) {
+                    Intent intent2 = new Intent(settingActivity.this, DeliveryMapActivity.class);
+                    startActivity(intent2);
+                    finish();
+                    return;
+                } else {
+                    Intent intent2 = new Intent(settingActivity.this, CustomerMapActivity.class);
+                    startActivity(intent2);
+                    finish();
+                    return;
+                }
             }
         });
     }
@@ -161,7 +174,7 @@ public class customerSettingActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
-                    while(!uri.isComplete());
+                    while (!uri.isComplete()) ;
                     Uri downloadUrl = uri.getResult();
 
                     Map newImage = new HashMap();
@@ -200,7 +213,7 @@ public class customerSettingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             result = data.getData();
             mIcon.setImageURI(result);
         }
