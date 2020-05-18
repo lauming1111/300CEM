@@ -39,6 +39,7 @@ import java.util.Map;
 public class settingActivity extends AppCompatActivity {
     private Button submit;
     private Button back;
+    private Button camera;
     private EditText name;
     private EditText phone;
     private TextView userId;
@@ -50,6 +51,8 @@ public class settingActivity extends AppCompatActivity {
     private String tempUserId;
     private String mName;
     private String mPhone;
+    private Bitmap bitmap = null;
+    public static final int CAMERA_REQUEST = 9999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +67,14 @@ public class settingActivity extends AppCompatActivity {
         submit = (Button) findViewById(R.id.sSubmit);
         back = (Button) findViewById(R.id.sdmBack);
         mIcon = (ImageView) findViewById(R.id.sImage);
+        camera = (Button) findViewById(R.id.cBtn);
         tempUserId = mAuth.getCurrentUser().getUid();
-
 
         String tmp = "User Id: " + mAuth.getCurrentUser().getUid();
 
         userId.setText(tmp);
         dbref = FirebaseDatabase.getInstance().getReference().child("Users").child("client").child(tempUserId);
         getUserInfo();
-
 
         mIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +92,14 @@ public class settingActivity extends AppCompatActivity {
                 Intent intent = new Intent(settingActivity.this, CustomerMapActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, CAMERA_REQUEST);
             }
         });
 
@@ -159,7 +169,7 @@ public class settingActivity extends AppCompatActivity {
         if (result != null) {
             Log.d("tempUserId", tempUserId);
             StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("images").child("icon_images").child(tempUserId);
-            Bitmap bitmap = null;
+
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), result);
             } catch (IOException e) {
@@ -216,6 +226,35 @@ public class settingActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             result = data.getData();
             mIcon.setImageURI(result);
+        }
+        if (requestCode == CAMERA_REQUEST) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+            mIcon.setImageBitmap(bitmap);
+            StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("images").child("icon_images").child(tempUserId);
+
+            // Compress Image
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            byte[] data1 = baos.toByteArray();
+            UploadTask uploadTask = imagePath.putBytes(data1);
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uri.isComplete()) ;
+                    Uri downloadUrl = uri.getResult();
+
+                    Map newImage = new HashMap();
+                    newImage.put("iconImageUrl", downloadUrl.toString());
+                    dbref.updateChildren(newImage);
+
+                    return;
+                }
+            });
+            Intent intent = new Intent(settingActivity.this, settingActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }
