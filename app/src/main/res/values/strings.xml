@@ -1,6 +1,23 @@
 <resources>
-    <string name="app_name">homework</string>
+    <string name="app_name">Eat MumMum</string>
     <string name="title_activity_delivery_map">Map</string>
     <string name="order_food">Order food</string>
+
     <string name="logout">Logout</string>
+    <string name="settingBtn">Setting</string>
+    <string name="infoBtn">Info</string>
+    <string name="registerBtn">Register</string>
+    <string name="loginBtn">Login</string>
+    <string name="bBtn">Back</string>
+
+
+    <string name="cusTxt">Customer</string>
+    <string name="dmTxt">Delivery man</string>
+    <string name="infiTxt">Info</string>
+    <string name="statusTxt">Status</string>
+    <string name="hiTxt"> Health Info</string>
+
+
+    <string name="emailHint">Email</string>
+    <string name="passwdHint">Password</string>
 </resources>

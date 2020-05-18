@@ -3,4 +3,22 @@
     <string name="title_activity_delivery_map">地圖</string>
     <string name="order_food">叫野食</string>
     <string name="logout">走佬</string>
+
+
+    <string name="settingBtn">設定</string>
+    <string name="infoBtn">資訊</string>
+    <string name="registerBtn">注冊</string>
+    <string name="loginBtn">登入</string>
+    <string name="bBtn">上一頁</string>
+
+
+    <string name="cusTxt">食野</string>
+    <string name="dmTxt">送野</string>
+    <string name="infiTxt">天氣資訊</string>
+    <string name="statusTxt">建議</string>
+    <string name="hiTxt">健康資訊</string>
+
+
+    <string name="emailHint">電郵地址</string>
+    <string name="passwdHint">密碼</string>
 </resources>

@@ -84,14 +84,16 @@ public class CustomerMapActivity extends FragmentActivity implements
             }
         };
 
-        setContentView(R.layout.activity_customer_map);
+        setContentView(R.layout.activity_setting);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(CustomerMapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         } else {
+//            if (mapFragment != null) {
             mapFragment.getMapAsync(this);
+//            }
         }
         mLogout = (Button) findViewById(R.id.logout);
         mOrder = (Button) findViewById(R.id.orderFood);
